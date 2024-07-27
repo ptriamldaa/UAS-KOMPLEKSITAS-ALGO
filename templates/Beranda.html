@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Mahasiswa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: "Roboto", sans-serif;
+            background-color: #1f4368;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 50px auto;
+            background-color: rgba(221, 238, 255, 0.8);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        h1 {
+            text-align: center;
+            color: #000;
+            margin-bottom: 30px;
+        }
+        .btn-add {
+            padding: 12px 24px;
+            color: #fff;
+            background-color: #34495e;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            float: right;
+        }
+        .btn-add:hover {
+            background-color: #2c3d4f;
+        }
+        .filter-container {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .filter-container select {
+            padding: 12px;
+            border: 1px solid #34495e;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #34495e;
+            background-color: #fff;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .filter-container select:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        th {
+            background-color: #34495e;
+            color: #fff;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        tr {
+            background-color: #f8f9fa;
+        }
+        tr:hover {
+            background-color: #e9ecef;
+        }
+        .status {
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-weight: bold;
+            color: #fff;
+            text-align: center;
+        }
+        .status-lulus {
+            background-color: #2ecc71; /* Hijau untuk Lulus */
+        }
+        .status-tidak-lulus {
+            background-color: #e74c3c; /* Merah untuk Tidak Lulus */
+        }
+        .btn-action {
+            display: inline-block;
+            padding: 8px 12px;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            font-size: 14px;
+            margin-right: 5px;
+            transition: opacity 0.3s;
+        }
+        .btn-action:hover {
+            opacity: 0.8;
+        }
+        .btn-action.detail {
+            background-color: #3498db;
+        }
+        .btn-action.edit {
+            background-color: #f39c12;
+        }
+        .btn-action.delete {
+            background-color: #e74c3c;
+        }
+        .btn-action i {
+            font-size: 16px;
+        }
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 20px;
+                border-radius: 5px;
+            }
+            table,
+            tr,
+            td {
+                display: block;
+            }
+            tr {
+                margin-bottom: 20px;
+            }
+            td {
+                border: none;
+                position: relative;
+                padding-left: 50%;
+            }
+            td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                font-weight: bold;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Rekap Penilaian Kompleksitas Algoritma</h1>
+        <a href="{{ url_for('tambah') }}" class="btn-add">Tambah Data</a>
+        <div class="filter-container">
+            <label for="kelas-filter">Pilih Kelas: </label>
+            <select id="kelas-filter">
+                <option value="all">Semua Kelas</option>
+                <option value="TI 4A">TI 4A</option>
+                <option value="TI 4B">TI 4B</option>
+                <option value="TI 4C">TI 4C</option>
+            </select>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>NIM</th>
+                    <th>Nama</th>
+                    <th>Program Studi</th>
+                    <th>Kelas</th>
+                    <th>Rata-Rata Nilai</th>
+                    <th>Nilai Huruf</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="data-mahasiswa">
+                {% for row in container %}
+                <tr class="kelas-{{ row[3] | replace(' ', '') }}">
+                    <td data-label="NIM">{{ row[0] }}</td>
+                    <td data-label="Nama">{{ row[1] }}</td>
+                    <td data-label="Program Studi">{{ row[2] }}</td>
+                    <td data-label="Kelas">{{ row[3] }}</td>
+                    <td data-label="Rata-Rata Nilai" style="text-align: center">{{ row[4] }}</td>
+                    <td data-label="Nilai Huruf" style="text-align: center">{{ row[5] }}</td>
+                    <td data-label="Status">
+                        <span class="status {% if row[6] == 'Lulus' %}status-lulus{% else %}status-tidak-lulus{% endif %}">
+                            {{ row[6] }}
+                        </span>
+                    </td>
+                    <td data-label="Aksi">
+                        <a href="{{ url_for('detail', nim=row[0]) }}" class="btn-action detail"><i class="fas fa-info-circle"></i></a>
+                        <a href="{{ url_for('edit', nim=row[0]) }}" class="btn-action edit"><i class="fas fa-edit"></i></a>
+                        <a href="{{ url_for('hapus', nim=row[0]) }}" class="btn-action delete" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"><i class="fas fa-trash"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.getElementById('kelas-filter').addEventListener('change', function() {
+            var filterValue = this.value;
+            var rows = document.querySelectorAll('#data-mahasiswa tr');
+            rows.forEach(function(row) {
+                if (filterValue === 'all') {
+                    row.style.display = '';
+                } else {
+                    if (row.classList.contains('kelas-' + filterValue.replace(' ', ''))) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

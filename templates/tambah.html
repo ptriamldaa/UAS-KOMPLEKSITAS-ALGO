@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Data Mahasiswa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #1f4368;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background-color: rgba(221, 238, 255, 0.8);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #000;
+            margin-bottom: 30px;
+        }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .form-group {
+            flex: 0 0 48%;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        label {
+            color: #000;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            padding: 12px;
+            border: 1px solid #fff;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            color: #fff;
+            background-color: #4781bc;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #4176ac;
+        }
+
+        .btn-secondary {
+            background-color: #c8403c;
+        }
+
+        .btn-secondary:hover {
+            background-color: #de3737;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 20px;
+            }
+
+            .form-group {
+                flex: 0 0 100%;
+            }
+
+            .btn-container {
+                flex-direction: column;
+                align-items: flex-end;
+            }
+
+            .btn-container .btn,
+            .btn-container .btn-secondary {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Tambah Data Mahasiswa</h2>
+        <form action="{{ url_for('tambah') }}" method="post">
+            <div class="form-group">
+                <label for="nim">NIM:</label>
+                <input type="text" id="nim" name="nim" required>
+            </div>
+            <div class="form-group">
+                <label for="nama">Nama:</label>
+                <input type="text" id="nama" name="nama" required>
+            </div>
+            <div class="form-group">
+                <label for="program_studi">Program Studi:</label>
+                <input type="text" id="program_studi" name="program_studi" required>
+            </div>
+            <div class="form-group">
+                <label for="kelas">Kelas:</label>
+                <select id="kelas" name="kelas" required>
+                    <option value="" disabled selected>Pilih Kelas</option>
+                    <option value="TI 4A">TI 4A</option>
+                    <option value="TI 4B">TI 4B</option>
+                    <option value="TI 4C">TI 4C</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="presensi">Presensi:</label>
+                <input type="number" id="presensi" name="presensi" min="0" max="16" required>
+            </div>
+            <div class="form-group">
+                <label for="tugas">Tugas:</label>
+                <input type="number" id="tugas" name="tugas" min="0" max="100" required>
+            </div>
+            <div class="form-group">
+                <label for="uts">UTS:</label>
+                <input type="number" id="uts" name="uts" min="0" max="100" required>
+            </div>
+            <div class="form-group">
+                <label for="uas">UAS:</label>
+                <input type="number" id="uas" name="uas" min="0" max="100" required>
+            </div>
+            <div class="btn-container">
+                <button type="submit" class="btn">Tambah</button>
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Batal</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
