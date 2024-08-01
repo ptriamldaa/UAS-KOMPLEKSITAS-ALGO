@@ -78,6 +78,24 @@
         .btn-custom:hover {
             background-color: rgb(30, 56, 74);
         }
+        .btn-print {
+            display: inline-flex;
+            align-items: center;
+            background-color: #34495e;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-print:hover {
+            background-color: rgb(30, 56, 74);
+        }
+        .btn-print i {
+            margin-right: 8px;
+        }
         .table-custom {
             width: 100%;
             margin-top: 20px;
@@ -110,10 +128,36 @@
         .data-value {
             flex: 1;
         }
+        @media print {
+            .btn-custom, .btn-print, .grade-circle, .nilai-huruf-label {
+                display: none;
+            }
+            .container-custom {
+                background-color: rgba(221, 238, 255) !important;
+            }
+            .card-header {
+                color: #000 !important;
+            }
+            .card-body {
+                background-color: rgba(221, 238, 255, 1) !important;
+                color: #000 !important;
+            }
+            .table-custom th {
+                color: #000 !important;
+            }
+            .status-badge{
+                color: #000;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container-custom">
+        <div class="d-flex justify-content-end align-items-center mb-3">
+            <button class="btn-print" onclick="window.print()">
+                <i class="fas fa-print"></i> Cetak
+            </button>
+        </div>
         <div class="card mb-4">
             <div class="card-header">
                 Detail Data Nilai {{ data[1] }}
@@ -142,7 +186,7 @@
                         <div class="grade-circle">
                             {{ data[10] }}
                         </div>
-                        <p class="mt-2"><strong>Nilai Huruf</strong></p>
+                        <p class="mt-2 nilai-huruf-label"><strong>Nilai Huruf</strong></p>
                     </div>
                 </div>
             </div>
@@ -157,6 +201,7 @@
                     <th>UAS</th>
                     <th>Total Nilai</th>
                     <th>Rata-Rata Nilai</th>
+                    <th>Nilai Huruf</th>
                     <th>Status</th>
                 </tr>
             </thead>
@@ -168,6 +213,7 @@
                     <td>{{ data[7] }}</td>
                     <td>{{ data[8] }}</td>
                     <td>{{ data[9] }}</td>
+                    <td id="print-grade">{{ data[10] }}</td>
                     <td>
                         <span class="status-badge {% if data[11] == 'Lulus' %}bg-success{% else %}bg-danger{% endif %}">
                             {{ data[11] }}
